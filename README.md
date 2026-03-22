@@ -101,6 +101,8 @@ User: 这个问题已经解决成功了，你有用到什么 skills 吗？
 
 8. [write-api-reference](https://github.com/vercel/next.js/blob/canary/.agents/skills/write-api-reference/SKILL.md)
 
+9. [skill creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)。这个 skill 与 session-learning 类似，创建，修改和改进现有技能。
+
 # usage
 不同 agent 读取 skill 的默认目录不同，最好是只维护一个 skill，其他 agent 可以通过链接来使用该 skill。
 
