@@ -80,9 +80,8 @@ skillhub install find-skills --dir /path/to/skills # download skill to /path/to/
 - 提供可执行的 Skill 安装建议
   当该 Skill 找到一个或多个匹配的 skill 后，它会自动整理并输出一份标准化的推荐信息。这份信息不仅包含技能的名称和功能简介 ，还会提供 一键安装指令 (npx skills add ...) 以及指向技能详情页的官方链接 。
 
-5. [requirement-analysis and specification]()
-简介：
-应用场景：
+5. [requirement-analysis and specification](./skills/requirement-analysis-and-specification/SKILL.md)
+简介：需求分析规格说明书的编写
 
 6. [session-learning](./skills/session-learning/SKILL.md)
 
