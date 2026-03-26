@@ -4,7 +4,7 @@ The following is an example for a vector add kernel.
 
 **Important**: Always use `torch.npu.is_available()` for device detection and `device='npu'` for tensor allocation. Never use `cuda`.
 
-define a python file named vector_add.py
+define a python file named vector_add/vector_add.py
 ```python
 import torch
 import triton
@@ -53,7 +53,7 @@ def custom_func(x: torch.Tensor, y: torch.Tensor):
     return output
 ```
 
-create a python file named test_vector_add_perf.py
+create a python file named vector_add/test_vector_add_perf.py
 ```python
 from vector_add import custom_func
 
@@ -75,7 +75,7 @@ def benchmark_function():
 if __name__ == "__main__":
     benchmark_function()
 ```
-create a python file named test_vector_add_verify.py
+create a python file named vector_add/test_vector_add_verify.py
 ```python
 from vector_add import custom_func
 # define the verify_correctness_function to verify the correctness of triton kernel
