@@ -4,7 +4,7 @@ The following is an example for a vector add kernel.
 
 **Important**: Always use `torch.npu.is_available()` for device detection and `device='npu'` for tensor allocation. Never use `cuda`.
 
-define a python file named vector_add_kernel.py
+define a python file named vector_add.py
 ```python
 import torch
 import triton
@@ -17,7 +17,7 @@ if not torch.npu.is_available():
 
 # define the kerneliton kernel for vector add
 @triton.jit
-def add_kernel(x_ptr,  # *Pointer* to first input vector.
+def vector_add_kernel(x_ptr,  # *Pointer* to first input vector.
                y_ptr,  # *Pointer* to second input vector.
                output_ptr,  # *Pointer* to output vector.
                n_elements,  # Size of the vector.
@@ -42,19 +42,20 @@ def add_kernel(x_ptr,  # *Pointer* to first input vector.
 
     tle.dsa.add(a_ub, b_ub, c_ub)
     tle.dsa.copy(c_ub, output_ptr + offsets, [tail_size])
-```
 
-create a python file named vector_add_benchmark.py
-```python
-from vector_add_kernel import add_kernel
 
 # wrap a python function to call triton kernel
 def custom_func(x: torch.Tensor, y: torch.Tensor):
     output = torch.empty_like(x)
     n_elements = output.numel()
     grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), )
-    add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=128)
+    vector_add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=128)
     return output
+```
+
+create a python file named test_vector_add_perf.py
+```python
+from vector_add import custom_func
 
 # define the benchmark_function to compare the performance of torch and triton kernel, use do_bench_npu to measure the performance
 def benchmark_function():
@@ -74,9 +75,9 @@ def benchmark_function():
 if __name__ == "__main__":
     benchmark_function()
 ```
-create a python file named vector_add_verify.py
+create a python file named test_vector_add_verify.py
 ```python
-from vector_add_kernel import add_kernel
+from vector_add import custom_func
 # define the verify_correctness_function to verify the correctness of triton kernel
 def verify_correctness():
     torch.manual_seed(0)
