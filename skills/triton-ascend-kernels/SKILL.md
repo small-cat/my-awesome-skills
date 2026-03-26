@@ -58,9 +58,6 @@ If optimizing an existing operator, perform targeted optimization on `<op_name>.
 - reference/ascend-npu-hardware-spec-constraints.md
 - reference/troubleshooting.md
 - tutorial/README.zh.md
-- reference/ascend-npu-hardware-spec-constraints.md
-- reference/troubleshooting.md
-- tutorial/README.zh.md
 
 ## Project structure
 ```
@@ -73,34 +70,34 @@ If optimizing an existing operator, perform targeted optimization on `<op_name>.
 └── tutorial                              # the best practices for triton kernels on ascend npus
     ├── README.zh.md                      # introduction to the best practices
     ├── basic
-    │   ├── 001-vector_add.py                   # 矢量运算单元不支持int64数据类型，不影响精度的情况下，使用int32
-    │   ├── 001-vector_add.zh.md                # 矢量运算单元不支持int64数据类型，不影响精度的情况下，使用int32
-    │   ├── 002-vector_cmp.py                   # Cmp Op不支持int32/int64数据类型矢量运算，不影响精度的情况下，转换为FP32
-    │   ├── 002-vector_cmp.zh.md                # Cmp Op不支持int32/int64数据类型矢量运算，不影响精度的情况下，转换为FP32
-    │   ├── 003-ub_overflow.py                  # 通过tiling解决UB内存消耗，避免UB溢出
-    │   ├── 003-ub_overflow.zh.md               # 通过tiling解决UB内存消耗，避免UB溢出
-    │   ├── 004-discrete_memory_access.py       # 小数据量的离散访存，全部读取到UB后使用Gather语义筛选，替代从GM直接单个读取
-    │   ├── 004-discrete_memory_access.zh.md    # 小数据量的离散访存，全部读取到UB后使用Gather语义筛选，替代从GM直接单个读取
-    │   ├── 005-load_order.py                   # 将与计算没有依赖的数据加载语句提前，让MTE2指令并行下发
-    │   ├── 005-load_order.zh.md                # 将与计算没有依赖的数据加载语句提前，让MTE2指令并行下发
-    │   ├── 006-tiling.py                       # 基于昇腾硬件的实际物理核数，划分grid，并在kernel内做tiling
-    │   └── 006-tiling.zh.md                    # 基于昇腾硬件的实际物理核数，划分grid，并在kernel内做tiling
+    │   ├── 001-vector_add.py                   # Vector unit does not support int64; use int32 if precision is not affected
+    │   ├── 001-vector_add.zh.md                # Vector unit does not support int64; use int32 if precision is not affected
+    │   ├── 002-vector_cmp.py                   # Cmp Op does not support int32/int64 vector operations; convert to FP32 if precision is not affected
+    │   ├── 002-vector_cmp.zh.md                # Cmp Op does not support int32/int64 vector operations; convert to FP32 if precision is not affected
+    │   ├── 003-ub_overflow.py                  # Solve UB memory consumption via tiling to avoid UB overflow
+    │   ├── 003-ub_overflow.zh.md               # Solve UB memory consumption via tiling to avoid UB overflow
+    │   ├── 004-discrete_memory_access.py       # For small scattered memory access, load all into UB and filter with Gather semantics instead of single GM reads
+    │   ├── 004-discrete_memory_access.zh.md    # For small scattered memory access, load all into UB and filter with Gather semantics instead of single GM reads
+    │   ├── 005-load_order.py                   # Move data load statements with no dependency on computation earlier to allow MTE2 instruction parallel dispatch
+    │   ├── 005-load_order.zh.md                # Move data load statements with no dependency on computation earlier to allow MTE2 instruction parallel dispatch
+    │   ├── 006-tiling.py                       # Partition grid based on actual physical cores of Ascend hardware, and do tiling inside the kernel
+    │   └── 006-tiling.zh.md                    # Partition grid based on actual physical cores of Ascend hardware, and do tiling inside the kernel
     ├── best_practice
     │   ├── 001-assign_req_to_token_pool.py
-    │   ├── 002-decode_grouped_attention.py     # 需要加载的Tensor在高维连续，低维离散时，转置实现向量化加载
-    │   ├── 002-decode_grouped_attention.zh.md  # 需要加载的Tensor在高维连续，低维离散时，转置实现向量化加载
-    │   ├── 003-fused-cat-slice-conv1d.py       # causal_conv1d_update 算子优化实例
-    │   ├── 003-fused-cat-slice-conv1d.zh.md    # causal_conv1d_update 算子优化实例
+    │   ├── 002-decode_grouped_attention.py     # When the tensor to load is contiguous in high dimensions and scattered in low dimensions, transpose to achieve vectorized loading
+    │   ├── 002-decode_grouped_attention.zh.md  # When the tensor to load is contiguous in high dimensions and scattered in low dimensions, transpose to achieve vectorized loading
+    │   ├── 003-fused-cat-slice-conv1d.py       # causal_conv1d_update operator optimization example
+    │   ├── 003-fused-cat-slice-conv1d.zh.md    # causal_conv1d_update operator optimization example
     │   ├── 004-gather_scatter.py
     │   ├── 005-binned_gather_scatter.py
     │   ├── 006-padded_gather_scatter.py
     │   └── utils.py
     └── op_extension
-        ├── 001-insert_slice.py                 # 多个数据合并到一起，批量处理，提升数据处理效率
-        ├── 001-insert_slice.zh.md              # 多个数据合并到一起，批量处理，提升数据处理效率
-        ├── 002-extract_slice.py                # 一次批量读取，截取部分数据处理，提升数据处理效率
-        ├── 002-extract_slice.zh.md             # 一次批量读取，截取部分数据处理，提升数据处理效率
-        └── 003-load_care_padding.zh.md         # 带Mask的数据加载，被Mask掉部分如果不需要默认值，显示指定，提升MTE2与Vector的并行
+        ├── 001-insert_slice.py                 # Merge multiple data pieces together for batch processing to improve data handling efficiency
+        ├── 001-insert_slice.zh.md              # Merge multiple data pieces together for batch processing to improve data handling efficiency
+        ├── 002-extract_slice.py                # Batch read once, extract and process partial data to improve data handling efficiency
+        ├── 002-extract_slice.zh.md             # Batch read once, extract and process partial data to improve data handling efficiency
+        └── 003-load_care_padding.zh.md         # For masked data loading, explicitly specify default values for masked-out portions if not needed, to improve MTE2 and Vector parallelism
 ```
 
 ## Best practices for triton kernels on Ascend NPUs
