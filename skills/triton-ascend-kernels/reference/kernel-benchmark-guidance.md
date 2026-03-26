@@ -2,12 +2,18 @@
 write a benchmark for triton kernel in ascend npu.
 The following is an example for a vector add kernel.
 
+**Important**: Always use `torch.npu.is_available()` for device detection and `device='npu'` for tensor allocation. Never use `cuda`.
+
 define a python file named vector_add_kernel.py
 ```python
 import torch
 import triton
 import triton.language as tl
 import triton.experimental.tle as tle
+
+# Check device availability - use npu, not cuda!
+if not torch.npu.is_available():
+    raise RuntimeError("NPU not available")
 
 # define the kerneliton kernel for vector add
 @triton.jit
@@ -23,6 +29,7 @@ def add_kernel(x_ptr,  # *Pointer* to first input vector.
     offsets = block_start + tl.arange(0, BLOCK_SIZE)
 
     # mem_addr_space is language.extra.cann.core.ascend_address_space
+    # Use DSA API for NPU - explicit buffer allocation
     a_ub = tle.dsa.alloc([BLOCK_SIZE], dtype=tl.float32, mem_addr_space=tle.dsa.ascend.UB)
     b_ub = tle.dsa.alloc([BLOCK_SIZE], dtype=tl.float32, mem_addr_space=tle.dsa.ascend.UB)
     c_ub = tle.dsa.alloc([BLOCK_SIZE], dtype=tl.float32, mem_addr_space=tle.dsa.ascend.UB)
@@ -40,6 +47,7 @@ def add_kernel(x_ptr,  # *Pointer* to first input vector.
 create a python file named vector_add_benchmark.py
 ```python
 from vector_add_kernel import add_kernel
+
 # wrap a python function to call triton kernel
 def custom_func(x: torch.Tensor, y: torch.Tensor):
     output = torch.empty_like(x)
@@ -52,6 +60,7 @@ def custom_func(x: torch.Tensor, y: torch.Tensor):
 def benchmark_function():
     torch.manual_seed(0)
     size = 1024
+    # IMPORTANT: Use device='npu', not 'cuda'!
     x = torch.rand(size, device='npu', dtype=torch.float)
     y = torch.rand(size, device='npu', dtype=torch.float)
 
@@ -72,6 +81,7 @@ from vector_add_kernel import add_kernel
 def verify_correctness():
     torch.manual_seed(0)
     size = 1024
+    # IMPORTANT: Use device='npu', not 'cuda'!
     x = torch.rand(size, device='npu', dtype=torch.float)
     y = torch.rand(size, device='npu', dtype=torch.float)
     output_torch = x + y
