@@ -39,11 +39,11 @@ Thoroughly analyze the operator's input parameters, data types, shape ranges, fu
 **Step 3**:
 If writing a new operator, design the operator implementation flow, referring to [ascend npu hardware spec](./reference/ascend-npu-hardware-spec-constraints.md) and [triton npu best practices](./tutorial/README.zh.md). Proceed to subsequent steps after user confirms the design. If optimizing an existing operator, first run the functional test:
 ```shell
-python -m <op_name>/test_<op_name>_verify.py
+python -m <op_name>.test_<op_name>_verify
 ```
 to verify correctness and precision. Then run the performance test:
 ```shell
-msprof op --output=<output_dir> --kernel-name="<op_name>_kernel" --warm-up=20 --launch-count=20 python <op_name>/test_<op_name>_perf.py
+msprof op --output=<output_dir> --kernel-name="<op_name>_kernel" python -m <op_name>.test_<op_name>_perf
 ```
 The `Task Duration(us)` in the output is the key performance metric; record it as the baseline performance.
 
@@ -51,8 +51,8 @@ The `Task Duration(us)` in the output is the key performance metric; record it a
 If writing a new operator, implement the operator in `<op_name>/<op_name>.py` and create two test files — `<op_name>/test_<op_name>_verify.py` for functional verification and `<op_name>/test_<op_name>_perf.py` for performance testing — by referring to [triton benchmark guidance](./reference/kernel-benchmark-guidance.md). Run the commands above to verify functional correctness and performance metrics.
 
 If optimizing an existing operator, perform targeted optimization on `<op_name>.py` based on the baseline analysis results. Ensure the performance improvement reaches at least x times (user's target), and the higher the better. Run the following tests:
-- Performance test (vs baseline): `msprof op --output=<user-specified-path> --kernel-name="<op_name>_kernel" --warm-up=20 --launch-count=20 python -m <op_name>/test_<op_name>_perf.py`
-- Correctness verification: `python -m <op_name>/test_<op_name>_verify.py`
+- Performance test (vs baseline): `msprof op --output=<user-specified-path> --kernel-name="<op_name>_kernel" python -m <op_name>.test_<op_name>_perf`
+- Correctness verification: `python -m <op_name>.test_<op_name>_verify`
 
 **IMPORTANT**: Reference documents for iterative tuning
 - reference/ascend-npu-hardware-spec-constraints.md

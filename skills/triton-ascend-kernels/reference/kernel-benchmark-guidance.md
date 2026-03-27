@@ -94,20 +94,16 @@ if __name__ == "__main__":
     verify_correctness()
 ```
 
-# profiler guidance
-昇腾 Ascend NPU kernel 可以使用 msprof 工具对算子性能进行分析。
+use command 
 
-## usage
-```shell
-# --output - 收集到的性能数据的存放路径，默认在当前目录下保存性能数据
-# --application - 应用执行命令
-msprof --output=xxx --application=""
-# msprof --output=./output-profile --application="python vector_add_benchmark.py"
-
-# 单算子上板调优
-# --output - 收集到的性能数据的存放路径，默认在当前目录下保存性能数据
-# --application - 单算子执行命令
-# --kernel-name - 指定要采集的算子名称，支持使用算子名前缀进行模糊匹配
-# --aic-metrics - 使能算子性能指标的采集能力和算子采集能力指标（Roofline/Occupancy/MemoryDetail等）
-msprof op --output=xxx --application="" --kernel-name=xxx --aic-metrics=xxx
+```python
+python -m vector_add.test_vector_add_verify
 ```
+
+to check the correctness of vector_add triton kernel, and use
+
+```python
+msprof op --output=<user-specified-path> --kernel-name="<op_name>_kernel" python -m <op_name>.test_<op_name>_perf
+```
+
+to profile the vector_add triton kernel, the `Task Duration(us)` in the output is the key performance metric.
