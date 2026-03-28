@@ -103,11 +103,7 @@ User: 这个问题已经解决成功了，你有用到什么 skills 吗？
 
 9. [skill_creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md)。这个 skill 与 session-learning 类似，创建，修改和改进现有技能。
 
-10. [triton-ascend-kernel](./skills/triton-ascend-kernel/SKILL.md)。为 ascend npu 编写和优化 triton kernel 算子。
-  - TODO
-    - 完善 kernel 优化指导，添加 tle.dsa 的 op 说明和优化思路
-    - 完善硬件信息
-    - 优化 skill 的工作流
+10. [triton-ascend-kernel](./skills/triton-ascend-kernel/SKILL.md)。为 ascend npu 编写和优化 triton kernel 算子。可以参考[华为的 agent skills](https://gitcode.com/Ascend/agent-skills/tree/master)
 
 # usage
 不同 agent 读取 skill 的默认目录不同，最好是只维护一个 skill，其他 agent 可以通过链接来使用该 skill。
