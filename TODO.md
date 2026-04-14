@@ -1,0 +1,4 @@
+- [ ] 仔细看下 superpowers, brainstorming 这两个 skill，参考借鉴，或者修改成适合自己的 skill
+- [ ] 使用 planning-with-files
+- [ ] ralph-wiggum 这个 loop 实现的过程学习一下
+- [ ] notebooklm 这个skill 是将 notebooklm 作为一个 rag，本质上保存的都是 markdown files，这个思路与 andrej karpathy 提出的 llm.wiki 不谋而合，不过最好还是本地自己维护一个 kownledge base，通过 obsidian 来管理，可以直接生成知识图谱等，利用 llm.wiki 的思路，形成一个类似 notebooklm-skill 的新的 skill，而不断维护和生成的知识库，作为自己的私人知识库，不断维护和更新，可以保存到 github/gitee/gitcode 上。
