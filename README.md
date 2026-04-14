@@ -105,6 +105,16 @@ User: 这个问题已经解决成功了，你有用到什么 skills 吗？
 
 10. [triton-ascend-kernel](./skills/triton-ascend-kernel/SKILL.md)。为 ascend npu 编写和优化 triton kernel 算子。可以参考[华为的 agent skills](https://gitcode.com/Ascend/agent-skills/tree/master)
 
+11. [planning-with-skills](https://github.com/OthmanAdi/planning-with-files)
+
+12. [superpowers skill](https://github.com/obra/superpowers)
+
+This skill repo contains brainstorming and superpowers skills, which is usefull.
+
+13. [ralph-wiggum skill](https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md)
+
+You must define the max iterations for agent to iterate, otherwise the no-limit iterations will cost all your tokens.
+
 # usage
 不同 agent 读取 skill 的默认目录不同，最好是只维护一个 skill，其他 agent 可以通过链接来使用该 skill。
 
