@@ -115,6 +115,10 @@ This skill repo contains brainstorming and superpowers skills, which is usefull.
 
 You must define the max iterations for agent to iterate, otherwise the no-limit iterations will cost all your tokens.
 
+13. [dev-agent-skills](https://github.com/fvadicamo/dev-agent-skills)
+
+git, github and skills authoring.
+
 # usage
 不同 agent 读取 skill 的默认目录不同，最好是只维护一个 skill，其他 agent 可以通过链接来使用该 skill。
 
