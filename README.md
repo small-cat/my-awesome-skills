@@ -119,6 +119,10 @@ You must define the max iterations for agent to iterate, otherwise the no-limit 
 
 git, github and skills authoring.
 
+14. [architecture-diagram-generator](https://github.com/Cocoon-AI/architecture-diagram-generator)
+
+Generate beautiful dark-themed system architecture diagrams as standalone HTML/SVG files
+
 # usage
 不同 agent 读取 skill 的默认目录不同，最好是只维护一个 skill，其他 agent 可以通过链接来使用该 skill。
 
